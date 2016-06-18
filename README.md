@@ -1,6 +1,6 @@
 # MyShell
 
-Simple unix shell written in C that reads user commands into a buffer, then parses and executes those commands with forked processes.
+Simple unix shell written in C that parses and executes user commands.
 
 Supports file redirection and background processes:
 
