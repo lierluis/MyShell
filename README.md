@@ -1,6 +1,6 @@
 # MyShell
 
-Simple unix shell written in C that parses and executes user commands.
+Simple mock unix shell written in C that reads and executes user commands.
 
 Supports file redirection and background processes:
 
@@ -14,8 +14,7 @@ Supports file redirection and background processes:
 To compile and run:
 
 ```
-$ gcc -o myshell myshell.c -std=c99 -pthread
-$ ./myshell
+$ gcc -o myshell myshell.c -std=c99 && ./myshell
 ```
 
 To exit, enter `exit` when using the shell.
@@ -63,3 +62,5 @@ partying
 MyShell> exit
 $ 
 ```
+
+Note: has only been tested on Ubuntu 12.04, 14.04, and macOS Sierra.
