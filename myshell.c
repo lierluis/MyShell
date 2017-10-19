@@ -17,9 +17,6 @@
 #include <stdbool.h> // true, false
 #include <string.h> // str functions
 
-#include <pthread.h>
-#include <time.h> // usleep
-
 #define BUFFER_SIZE 1024
 #define MAX_TOKENS 7
 
