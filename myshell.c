@@ -3,8 +3,6 @@
  *    Date: 12/12/15
  */
 
-// grep party < /usr/share/dict/words > filename.txt
-
 #define _BSD_SOURCE
 #include <stdio.h> // fgets, stdin
 #include <unistd.h> // fork, execvp
@@ -140,7 +138,6 @@ int main(int argc, char **argv)
 			saved_out = dup(STDOUT_FILENO); // save fd of STDOUT
 			dup2(out, STDOUT_FILENO); // standard output is now to file
 			close(out); // out's fd no longer needed
-			
 		}
 		else if (output_err || output_err2)
 		{
