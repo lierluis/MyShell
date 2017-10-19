@@ -34,11 +34,13 @@ int main(int argc, char **argv)
 		fgets(buffer, BUFFER_SIZE, stdin); // read input & put it in buffer
 		
 		char *pos;
-		if((pos = strchr(buffer, '\n')) != NULL)
+		if((pos = strchr(buffer, '\n')) != NULL) {
 			*pos = '\0'; // remove trailing newline character
-			
-		if(strcmp(buffer, "exit") == 0)
-		break; // exit shell if user inputs "exit"
+		}
+		
+		if(strcmp(buffer, "exit") == 0) {
+			break; // exit shell if user inputs "exit"
+		}
 		
 		int in, out, saved_in, saved_out; // fds
 		char *infile, *outfile;
@@ -53,11 +55,14 @@ int main(int argc, char **argv)
 		{
 			if (next_ptr != NULL)
 			{
-				if (strcmp(next_ptr, "<") == 0) {
+				if (strcmp(next_ptr, "<") == 0)
+				{
 					input = true;
 					
 					// make all args null after redirect symbol
-					for (int j = i; j <= MAX_TOKENS; j++) args[j] = NULL;
+					for (int j = i; j <= MAX_TOKENS; j++) {
+						args[j] = NULL;
+					}
 					
 					// next token must be filename
 					next_ptr = strtok_r(NULL, " ", &save_ptr);
@@ -67,58 +72,83 @@ int main(int argc, char **argv)
 					next_ptr = strtok_r(NULL, " ", &save_ptr);
 					
 					// break if token is null, since there is nothing after
-					if (next_ptr == NULL) break;
+					if (next_ptr == NULL) {
+						break;
+					}
 				}
 				if (strcmp(next_ptr, ">") == 0 || strcmp(next_ptr, ">>") == 0
-					|| strcmp(next_ptr, "2>") == 0 || strcmp(next_ptr, "2>>") == 0) {
-					
-					if (strcmp(next_ptr, ">") == 0) output = true;
-					else if (strcmp(next_ptr, ">>") == 0) output2 = true;
-					else if (strcmp(next_ptr, "2>") == 0) output_err = true;
-					else if (strcmp(next_ptr, "2>>") == 0) output_err2 = true;
+						|| strcmp(next_ptr, "2>") == 0 || strcmp(next_ptr, "2>>") == 0)
+				{
+					if (strcmp(next_ptr, ">") == 0) {
+						output = true;
+					} else if (strcmp(next_ptr, ">>") == 0) {
+						output2 = true;
+					} else if (strcmp(next_ptr, "2>") == 0) {
+						output_err = true;
+					} else if (strcmp(next_ptr, "2>>") == 0) {
+						output_err2 = true;
+					}
 					
 					// repeat same process as for input
-					for (int j = i; j <= MAX_TOKENS; j++) args[j] = NULL;
+					for (int j = i; j <= MAX_TOKENS; j++) {
+						args[j] = NULL;
+					}
 					next_ptr = strtok_r(NULL, " ", &save_ptr);
 					outfile = next_ptr;
 					next_ptr = strtok_r(NULL, " ", &save_ptr);
-					if (next_ptr == NULL) break;
+					if (next_ptr == NULL) {
+						break;
+					}
 				}
-				if (strcmp(next_ptr, "&") == 0) { // '&' is guaranteed to be last token
+				if (strcmp(next_ptr, "&") == 0) // '&' is guaranteed to be last token
+				{
 					background = true;
-					for (int j = i; j <= MAX_TOKENS; j++) args[j] = NULL;
+					for (int j = i; j <= MAX_TOKENS; j++) {
+						args[j] = NULL;
+					}
 					next_ptr = strtok_r(NULL, " ", &save_ptr);
 					break;
 				}
 			}
 			args[i] = next_ptr;
 			
-			if (next_ptr==NULL || output||output2||output_err||output_err2||background)
+			if (next_ptr==NULL||output||output2||output_err||output_err2||background) {
 				break;
+			}
 			next_ptr = strtok_r(NULL, " ", &save_ptr);
 		}
 		args[MAX_TOKENS] = NULL;
 		
-		if (input) {
+		if (input)
+		{
 			in = open(infile, O_RDONLY);
 			saved_in = dup(STDIN_FILENO); // save fd of STDIN
 			dup2(in, STDIN_FILENO); // standard input is now to file
 			close(in); // in's fd no longer needed
 		}
-		if (output || output2) {
+		if (output || output2)
+		{
 			// O_WRONLY: write; O_TRUNC: truncate; O_APPEND: append; O_CREAT: create file
 			// I_IRUSR, S_IWUSR: read & write for owner
 			// I_IRGRP, S_IWGRP: read & write for group
-			if (output) out = open(outfile,O_WRONLY|O_TRUNC|O_CREAT,S_IRUSR|S_IRGRP|S_IWGRP|S_IWUSR);
-			else out = open(outfile,O_WRONLY|O_APPEND|O_CREAT,S_IRUSR|S_IRGRP|S_IWGRP|S_IWUSR);
-			
+			if (output) {
+				out = open(outfile,O_WRONLY|O_TRUNC|O_CREAT,S_IRUSR|S_IRGRP|S_IWGRP|S_IWUSR);
+			} else {
+				out = open(outfile,O_WRONLY|O_APPEND|O_CREAT,S_IRUSR|S_IRGRP|S_IWGRP|S_IWUSR);
+			}
+
 			saved_out = dup(STDOUT_FILENO); // save fd of STDOUT
 			dup2(out, STDOUT_FILENO); // standard output is now to file
 			close(out); // out's fd no longer needed
 			
-		} else if (output_err || output_err2) {
-			if (output_err) out = open(outfile,O_WRONLY|O_TRUNC|O_CREAT,S_IRUSR|S_IRGRP|S_IWGRP|S_IWUSR);
-			else out = open(outfile,O_WRONLY|O_APPEND|O_CREAT,S_IRUSR|S_IRGRP|S_IWGRP|S_IWUSR);
+		}
+		else if (output_err || output_err2)
+		{
+			if (output_err) {
+				out = open(outfile,O_WRONLY|O_TRUNC|O_CREAT,S_IRUSR|S_IRGRP|S_IWGRP|S_IWUSR);
+			} else {
+				out = open(outfile,O_WRONLY|O_APPEND|O_CREAT,S_IRUSR|S_IRGRP|S_IWGRP|S_IWUSR);
+			}
 			
 			saved_out = dup(STDERR_FILENO); // save fd of STDERR
 			dup2(out, STDERR_FILENO); // standard error is now to file
@@ -163,4 +193,3 @@ int main(int argc, char **argv)
 		
 	} // end while
 } // end main
-
