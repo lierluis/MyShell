@@ -6,7 +6,6 @@
 // grep party < /usr/share/dict/words > filename.txt
 
 #define _BSD_SOURCE
-#define _POSIX_SOURCE
 #include <stdio.h> // fgets, stdin
 #include <unistd.h> // fork, execvp
 #include <sys/types.h> // pid_t
